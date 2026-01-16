@@ -1,5 +1,7 @@
 {
   "name": "Smile Tree-ForQB",
   "description": "An immersive interactive generative art tree driven by facial expressions and hand gestures.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "camera"
+  ]
 }

@@ -221,11 +221,13 @@ const App: React.FC = () => {
         }
         // 2. Request Camera
         await enableCamera();
+        // Only switch mode if camera success
         setInteractionMode('smile');
       } catch (error) {
         console.error("Failed to enter smile mode:", error);
-        // Fallback to click if failed
-        setInteractionMode('click');
+        // Do NOT set back to click immediately so error UI can be seen if needed,
+        // or effectively we just stay in current mode but permissionError is true
+        // which triggers the overlay.
       } finally {
         setIsLoadingSmile(false);
       }
@@ -332,12 +334,12 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {permissionError && interactionMode === 'smile' && (
+        {permissionError && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-50 pointer-events-auto">
             <div className="text-center max-w-lg p-6 border border-red-500/50 bg-red-900/20 rounded-xl">
               <h2 className="text-xl text-red-400 mb-2">需要摄像头权限</h2>
               <p className="text-gray-300 mb-4 text-sm">
-                微笑开花模式需要使用摄像头来识别您的表情。
+                微笑开花模式需要使用摄像头来识别您的表情。请在浏览器设置中允许摄像头访问。
               </p>
               <button 
                 onClick={(e) => { e.stopPropagation(); setInteractionMode('click'); setPermissionError(false); }}
